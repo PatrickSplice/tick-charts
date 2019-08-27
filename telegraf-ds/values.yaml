@@ -3,7 +3,7 @@
 ## ref: https://hub.docker.com/r/library/telegraf/tags/
 image:
   repo: "telegraf"
-  tag: "1.2.1-alpine"
+  tag: "1.11.3-alpine"
   pullPolicy: IfNotPresent
 
 ## Configure resource requests and limits
@@ -31,14 +31,14 @@ config:
     flush_jitter: "0s"
   outputs:
     influxdb:
-      url: "http://data-influxdb.tick:8086"
+      url: "https://data-influxdb.tick:8086"
       database: "telegraf"
       retention_policy: ""
       timeout: "5s"
       username: ""
       password: ""
       user_agent: "telegraf"
-      insecure_skip_verify: false
+      insecure_skip_verify: true
   inputs:
     kubernetes:
       url: "http://$HOSTNAME:10255"
@@ -49,3 +49,13 @@ config:
       timeout: "5s"
       perdevice: true
       total: false
+    cpu:
+    disk:
+    net:
+    swap:
+    system:
+    kube_inventory:
+      url: "http://$HOSTNAME"
+      bearer_token: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+      insecure_skip_verify: true
+      namespace: ""

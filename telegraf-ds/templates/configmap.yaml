@@ -62,4 +62,10 @@ data:
     [[inputs.processes]]
     [[inputs.swap]]
     [[inputs.system]]
+    [[inputs.net]]
+    [[inputs.kube_inventory]]
+      url = {{ .Values.config.inputs.kube_inventory.url | quote }}
+      bearer_token = {{ .Values.config.inputs.kube_inventory.bearer_token | quote }}
+      insecure_skip_verify = {{ .Values.config.inputs.kube_inventory.insecure_skip_verify }}
+      namespace = {{ .Values.config.inputs.kube_inventory.namespace | quote }}
 {{- end -}}

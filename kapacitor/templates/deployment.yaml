@@ -1,4 +1,4 @@
-{{- if not (empty .Values.influxURL) }}
+{{- if not (empty .Values.config.influxdb.urls) }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -23,7 +23,7 @@ spec:
         - name: KAPACITOR_HOSTNAME
           value: {{ template "fullname" . }}.{{ .Release.Namespace }}
         - name: KAPACITOR_INFLUXDB_0_URLS_0
-          value: {{ .Values.influxURL }}
+          value: {{ .Values.config.influxdb.urls }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
@@ -31,6 +31,11 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/kapacitor
+        - name: certs
+          mountPath: /var/run/certs
+          readOnly: true
+        - name: config
+          mountPath: /etc/kapacitor
       volumes:
       - name: data
       {{- if .Values.persistence.enabled }}
@@ -39,4 +44,10 @@ spec:
       {{- else }}
         emptyDir: {}
       {{- end }}
+      - name: certs
+        secret:
+          secretName: test-tls
+      - name: config
+        configMap:
+          name: {{ template "fullname" . }}
 {{- end }}

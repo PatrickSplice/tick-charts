@@ -47,12 +47,14 @@ spec:
           httpGet:
             path: /ping
             port: api
+            scheme: HTTPS
           initialDelaySeconds: 30
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /ping
             port: api
+            scheme: HTTPS
           initialDelaySeconds: 5
           timeoutSeconds: 1
         volumeMounts:
@@ -60,6 +62,9 @@ spec:
           mountPath: {{ .Values.config.storage_directory }}
         - name: config
           mountPath: /etc/influxdb
+        - name: certs
+          mountPath: /var/run/certs
+          readOnly: true
       volumes:
       - name: data
       {{- if .Values.persistence.enabled }}
@@ -71,3 +76,6 @@ spec:
       - name: config
         configMap:
           name: {{ template "fullname" . }}
+      - name: certs
+        secret:
+          secretName: test-tls
