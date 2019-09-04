@@ -35,8 +35,8 @@ config:
       database: "telegraf"
       retention_policy: ""
       timeout: "5s"
-      username: ""
-      password: ""
+      username: "splice_admin"
+      password: "Passw0rd!"
       user_agent: "telegraf"
       insecure_skip_verify: true
   inputs:

@@ -37,6 +37,9 @@ resources:
 ## Defaults are indicated
 ## ref: https://docs.influxdata.com/influxdb/v1.1/administration/config/
 config:
+  authentication:
+    user: splice_admin
+    password: Passw0rd!
   reporting_disabled: false
   bind_address: 8088
   storage_directory: /var/lib/influxdb
@@ -86,7 +89,7 @@ config:
   http:
     enabled: true
     bind_address: 8086
-    auth_enabled: false
+    auth_enabled: true
     log_enabled: true
     write_tracing: false
     pprof_enabled: true

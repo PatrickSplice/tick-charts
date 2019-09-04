@@ -18,6 +18,11 @@ spec:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        env:
+        - name: INFLUXDB_ADMIN_USER
+          value: {{ .Values.config.authentication.user | quote }}
+        - name: INFLUXDB_ADMIN_PASSWORD
+          value: {{ .Values.config.authentication.password | quote }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
