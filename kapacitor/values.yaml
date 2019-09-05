@@ -3,7 +3,7 @@
 ##
 image:
   repository: "kapacitor"
-  tag: "1.4.1-alpine"
+  tag: "1.5.3-alpine"
   pullPolicy: "IfNotPresent"
 
 ## Specify a service type, defaults to NodePort
@@ -41,9 +41,17 @@ resources:
 config:
   # global_tags:
   #   cluster: "mycluster"
+  data_dir: /var/lib/kapacitor
+  http:
+    bind_address: ":9092"
+    https_enabled: true
+    https_certificate: /var/run/certs/tls.crt
+    https_private_key: /var/run/certs/tls.key
   influxdb:
     enabled: true
     default: true
+    username: splice_admin
+    password: Passw0rd!
     name: kapacitor
     urls: https://data-influxdb.tick:8086
     ssl_cert: /var/run/certs/tls.crt
