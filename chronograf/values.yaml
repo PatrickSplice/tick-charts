@@ -11,7 +11,7 @@ image:
 ##
 service:
   replicas: 1
-  type: LoadBalancer
+  type: ClusterIP
 
 ## Persist data to a persitent volume
 ##
@@ -40,22 +40,22 @@ resources:
 ## OPTIONALLY you can set .Values.ingress.secretName to set which secret to use    
 ## 
 ingress:
-  enabled: false
-  tls: false
-  hostname: chronograf.foobar.com
+  enabled: true
+  tls: true
+  hostname: chronograf.splicemachine-dev.io
   annotations:
-    # kubernetes.io/ingress.class: "nginx"
-    # secretName: my-tls-cert
-    # kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+    secretName: splicemachine-dev-io-cert
+    kubernetes.io/tls-acme: "false"
 
 ## OAuth Settings for OAuth Providers
 ## More information -> https://github.com/influxdata/chronograf/blob/master/docs/auth.md
 ##
 oauth:
   # Need to set to true to use any of the oauth options
-  enabled: false
+  enabled: true
   # Used for JWT to support running multiple copies of Chronograf
-  token_secret: CHANGE_ME
+  token_secret: $pl1c3M4ch1n3
   github:
     enabled: false
     client_id: CHANGE_ME
@@ -75,3 +75,9 @@ oauth:
     client_secret: CHANGE_ME
     # This is a comma seperated list of Heroku organizations (OPTIONAL)
     he_orgs: ""
+  auth0:
+    enabled: true
+    domain: https://splicemachine-dev.auth0.com
+    client_id: zdS4y0EQmNSioimlHgM2D4HOMpcc2VcE
+    client_secret: nNRmUjqRRzqnaxLLbL16SMUx2iS45altxmQudBAbCPICL51weY7rf0qSAoqeyBJu
+    public_url: https://chronograf.splicemachine-dev.io
