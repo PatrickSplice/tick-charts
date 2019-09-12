@@ -3,7 +3,7 @@
 ##
 image:
   repository: "kapacitor"
-  tag: "1.2"
+  tag: "1.5.3-alpine"
   pullPolicy: "IfNotPresent"
 
 ## Specify a service type, defaults to NodePort
@@ -16,7 +16,7 @@ service:
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
 persistence:
-  enabled: false
+  enabled: true
   ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
   ## Default: volume.alpha.kubernetes.io/storage-class: default
   ##
@@ -38,4 +38,23 @@ resources:
 ## Set the URL of InfluxDB instance to create subscription on
 ## ref: https://docs.influxdata.com/kapacitor/v1.1/introduction/getting_started/
 ##
-influxURL: http://data-influxdb.tick:8086
+config:
+  # global_tags:
+  #   cluster: "mycluster"
+  data_dir: /var/lib/kapacitor
+  http:
+    bind_address: ":9092"
+    https_enabled: true
+    https_certificate: /var/run/certs/tls.crt
+    https_private_key: /var/run/certs/tls.key
+  influxdb:
+    enabled: true
+    default: true
+    username: splice_admin
+    password: Passw0rd!
+    name: kapacitor
+    urls: https://data-influxdb.tick:8086
+    ssl_cert: /var/run/certs/tls.crt
+    ssl_key: /var/run/certs/tls.key
+    insecure_skip_verify: true
+    subscription_protocol: https

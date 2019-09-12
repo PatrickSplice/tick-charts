@@ -1,0 +1,36 @@
+{{- if not (empty .Values.config.influxdb.urls) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  kapacitor.conf: |+
+    {{- if .Values.config.global_tags }}
+    [global_tags]
+      {{- range $key, $val := .Values.config.global_tags }}
+      {{ $key }} = {{ $val | quote }}
+      {{- end }}
+    {{- end }}
+    data_dir = {{ .Values.config.data_dir | quote }}
+    [http]
+      bind-address = {{ .Values.config.http.bind_address | quote }}
+      https-enabled = {{ .Values.config.http.https_enabled }}
+      https-certificate = {{ .Values.config.http.https_certificate | quote }}
+      https-private-key = {{ .Values.config.http.https_private_key | quote }}
+    [[influxdb]]
+      enabled = {{ .Values.config.influxdb.enabled }}
+      default = {{ .Values.config.influxdb.default }}
+      name = {{ .Values.config.influxdb.name | quote }}
+      urls = [{{ .Values.config.influxdb.urls | quote }}]
+      username = {{ .Values.config.influxdb.username | quote }}
+      password = {{ .Values.config.influxdb.password | quote }}
+      ssl-cert = {{ .Values.config.influxdb.ssl_cert | quote }}
+      ssl-key = {{ .Values.config.influxdb.ssl_key | quote }}
+      subscription-protocol = {{ .Values.config.influxdb.subscription_protocol | quote }}
+      insecure-skip-verify = {{ .Values.config.influxdb.insecure_skip_verify }}
+{{- end -}}
